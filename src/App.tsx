@@ -11,6 +11,7 @@ import { ShopPage } from './components/Shop';
 import { ProductDetailPage } from './components/ProductDetail';
 import { CartPage } from './components/Cart';
 import { Page, Product, CartItem } from './types';
+import { agentAuthenticate, checkAgentPermission, getWebsitePermissions } from "uoaweb3-2026-team5";
 
 export default function App() {
   const [page, setPage] = useState<Page>('home');
@@ -39,6 +40,7 @@ export default function App() {
 
   const updateQuantity = (id: string, delta: number) => {
     console.log("updateQuantity");
+    console.log(getWebsitePermissions())
     setCart(prev => prev.map(item => {
       if (item.id === id) {
         const newQty = Math.max(1, item.quantity + delta);
@@ -52,6 +54,16 @@ export default function App() {
     console.log("removeItem");
     setCart(prev => prev.filter(item => item.id !== id));
   };
+
+  const checkout = () => {
+    var permissions = getWebsitePermissions()
+    if (checkAgentPermission(/*agent*/, permissions)) {
+      console.log("agentPermissionTrue")
+    } else {
+      console.log("agentPermissionFalse")
+    }
+    console.log("checkoutClicked");
+  }
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -77,6 +89,7 @@ export default function App() {
               removeItem={removeItem} 
               updateQuantity={updateQuantity} 
               setPage={setPage} 
+              checkout={checkout}
             />
           )}
         </AnimatePresence>

@@ -18,12 +18,14 @@ export default function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const onProductSelect = (p: Product) => {
+    console.log("onProductSelect");
     setSelectedProduct(p);
     setPage('product');
     window.scrollTo(0, 0);
   };
 
   const addToCart = (p: Product) => {
+    console.log("addToCart");
     setCart(prev => {
       const existing = prev.find(item => item.id === p.id);
       if (existing) {
@@ -36,6 +38,7 @@ export default function App() {
   };
 
   const updateQuantity = (id: string, delta: number) => {
+    console.log("updateQuantity");
     setCart(prev => prev.map(item => {
       if (item.id === id) {
         const newQty = Math.max(1, item.quantity + delta);
@@ -46,6 +49,7 @@ export default function App() {
   };
 
   const removeItem = (id: string) => {
+    console.log("removeItem");
     setCart(prev => prev.filter(item => item.id !== id));
   };
 

@@ -11,11 +11,9 @@ interface CartPageProps {
     checkout: () => void;
     key?: string;
 }
-  const checkout = () => {
-    console.log("checkoutClicked");
-  }
-  
-export function CartPage({ items, updateQuantity, removeItem, setPage }: CartPageProps) {
+
+
+export function CartPage({ items, updateQuantity, removeItem, setPage, checkout }: CartPageProps) {
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const shipping = subtotal > 0 ? 25 : 0;
     const tax = subtotal * 0.08;

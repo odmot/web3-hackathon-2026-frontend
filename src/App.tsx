@@ -11,7 +11,7 @@ import { ShopPage } from './components/Shop';
 import { ProductDetailPage } from './components/ProductDetail';
 import { CartPage } from './components/Cart';
 import { Page, Product, CartItem } from './types';
-import { agentAuthenticate, checkAgentPermission, getWebsitePermissions } from "uoaweb3-2026-team5";
+import { agentAuthenticate, checkAgentPermission, getWebsitePermissions} from "uoaweb3-2026-team5";
 
 export default function App() {
   const [page, setPage] = useState<Page>('home');
@@ -57,7 +57,7 @@ export default function App() {
 
   const checkout = () => {
     var permissions = getWebsitePermissions()
-    if (checkAgentPermission(/*agent*/, permissions)) {
+    if (checkAgentPermission("TestAgent", "TestPermission")) {
       console.log("agentPermissionTrue")
     } else {
       console.log("agentPermissionFalse")

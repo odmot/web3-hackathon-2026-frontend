@@ -8,10 +8,12 @@ interface CartPageProps {
     updateQuantity: (id: string, delta: number) => void;
     removeItem: (id: string) => void;
     setPage: (p: Page) => void;
+    checkout: () => void;
     key?: string;
 }
 
-export function CartPage({ items, updateQuantity, removeItem, setPage }: CartPageProps) {
+
+export function CartPage({ items, updateQuantity, removeItem, setPage, checkout }: CartPageProps) {
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const shipping = subtotal > 0 ? 25 : 0;
     const tax = subtotal * 0.08;
@@ -116,7 +118,8 @@ export function CartPage({ items, updateQuantity, removeItem, setPage }: CartPag
                             <span className="text-4xl italic text-primary">${total.toFixed(2)}</span>
                         </div>
                         <div className="space-y-4">
-                            <button className="w-full bg-primary text-background py-6 text-[10px] font-bold tracking-[0.5em] uppercase hover:bg-neutral-200 transition-all">
+                            <button onClick={() => checkout()}
+                                className="w-full bg-primary text-background py-6 text-[10px] font-bold tracking-[0.5em] uppercase hover:bg-neutral-200 transition-all">
                                 Checkout
                             </button>
                             <button 

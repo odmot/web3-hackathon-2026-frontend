@@ -64,6 +64,8 @@ export default function App() {
 
   const updateQuantity = (id: string, delta: number) => {
     console.log("updateQuantity");
+    console.log(getWebsitePermissions())
+	
 	var purchaseLimit=false;
 	if (agentAuthenticate("AgentGPT") == true){
 		if (checkAgentPermission("AgentGPT", "Allow Purchases") == false) {return;} //agent hardcoded
@@ -100,6 +102,16 @@ export default function App() {
     setCart(prev => prev.filter(item => item.id !== id));
   };
 
+  const checkout = () => {
+    var permissions = getWebsitePermissions()
+    if (checkAgentPermission("TestAgent", "TestPermission")) {
+      console.log("agentPermissionTrue")
+    } else {
+      console.log("agentPermissionFalse")
+    }
+    console.log("checkoutClicked");
+  }
+
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -124,6 +136,7 @@ export default function App() {
               removeItem={removeItem} 
               updateQuantity={updateQuantity} 
               setPage={setPage} 
+              checkout={checkout}
             />
           )}
         </AnimatePresence>

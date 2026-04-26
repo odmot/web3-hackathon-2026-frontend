@@ -20,4 +20,4 @@ export interface CartItem extends Product {
     selectedSize?: string;
 }
 
-export type Page = 'home' | 'shop' | 'product' | 'cart';
+export type Page = 'home' | 'shop' | 'product' | 'cart' | 'checkout';

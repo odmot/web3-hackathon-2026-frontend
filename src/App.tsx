@@ -10,6 +10,7 @@ import { HomePage } from './components/Home';
 import { ShopPage } from './components/Shop';
 import { ProductDetailPage } from './components/ProductDetail';
 import { CartPage } from './components/Cart';
+import { CheckoutPage } from './components/Checkout';
 import { Page, Product, CartItem } from './types';
 import { agentAuthenticate, checkAgentPermission } from "uoaweb3-2026-team5";
 import {
@@ -104,12 +105,12 @@ export default function App() {
 
   const checkout = () => {
     var permissions = getWebsitePermissions()
-    if (checkAgentPermission("TestAgent", "TestPermission")) {
-      console.log("agentPermissionTrue")
+    if (checkAgentPermission("AgentGPT", "Allow Purchases")) {
+      console.log("checkoutAgentPermissionTrue")
+      setPage('checkout')
     } else {
-      console.log("agentPermissionFalse")
+      console.log("checkoutAgentPermissionFalse")
     }
-    console.log("checkoutClicked");
   }
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -139,6 +140,13 @@ export default function App() {
               checkout={checkout}
             />
           )}
+	  {page === 'checkout' && (
+	    <CheckoutPage
+	      key="checkout"
+	      items={cart}
+	      setPage={setPage}
+	    />
+	  )}
         </AnimatePresence>
       </main>
 

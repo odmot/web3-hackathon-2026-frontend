@@ -11,6 +11,12 @@ import { ShopPage } from './components/Shop';
 import { ProductDetailPage } from './components/ProductDetail';
 import { CartPage } from './components/Cart';
 import { Page, Product, CartItem } from './types';
+import { agentAuthenticate, checkAgentPermission } from "uoaweb3-2026-team5";
+import {
+  getWebsitePermissions,
+  setAIPermissions,
+  userAuthenticate,
+} from "uoaweb3-2026-team5";
 
 export default function App() {
   const [page, setPage] = useState<Page>('home');
@@ -26,6 +32,25 @@ export default function App() {
 
   const addToCart = (p: Product) => {
     console.log("addToCart");
+
+
+	if (agentAuthenticate("AgentGPT") == true){
+		if (checkAgentPermission("AgentGPT", "Allow Purchases") == false) {return;} //agent hardcoded
+		if (checkAgentPermission("AgentGPT", "Allow Purchase Past Limit") == false) { //agent hardcoded
+			const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0) + p.price;
+			const shipping = subtotal > 0 ? 25 : 0;
+			const tax = subtotal * 0.08;
+			const total = subtotal + shipping + tax;
+			console.log(total);
+
+			
+			if (total>=2000) {
+				console.log("This Agent has no permissions to spend past $2000");
+				return;
+			}
+		}
+	}
+
     setCart(prev => {
       const existing = prev.find(item => item.id === p.id);
       if (existing) {
@@ -39,8 +64,30 @@ export default function App() {
 
   const updateQuantity = (id: string, delta: number) => {
     console.log("updateQuantity");
+	var purchaseLimit=false;
+	if (agentAuthenticate("AgentGPT") == true){
+		if (checkAgentPermission("AgentGPT", "Allow Purchases") == false) {return;} //agent hardcoded
+		if (checkAgentPermission("AgentGPT", "Allow Purchase Past Limit") == false) { //agent hardcoded
+			purchaseLimit=true;
+		}
+	}
+
     setCart(prev => prev.map(item => {
       if (item.id === id) {
+		if (purchaseLimit && delta>0) {
+			const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0) + item.price;
+			const shipping = subtotal > 0 ? 25 : 0;
+			const tax = subtotal * 0.08;
+			const total = subtotal + shipping + tax;
+
+			console.log(total);
+
+			
+			if (total>=2000) {
+				console.log("This Agent has no permissions to spend past $2000");
+				return item;
+			}
+		}
         const newQty = Math.max(1, item.quantity + delta);
         return { ...item, quantity: newQty };
       }
